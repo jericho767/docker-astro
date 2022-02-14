@@ -4,6 +4,7 @@ volumes:
   database:
 
 services:
+  # TODO NEEDS TO BE CHECKED
   nginx:
     build:
       context: .
@@ -26,6 +27,7 @@ services:
     volumes_from:
       - data
 
+  # TODO NEEDS TO BE CHECKED
   php:
     build:
       context: .
@@ -44,6 +46,7 @@ services:
       - postfix:postfix
       - redis:redis
 
+  # TODO NEEDS TO BE CHECKED
   mysql:
     build:
       context: .
@@ -85,6 +88,7 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - DOCKER_IP=${DOCKER_IP}
 
+  # TODO NEEDS TO BE CHECKED
   cron:
     build:
       context: .
@@ -100,6 +104,7 @@ services:
       - mysql:mysql
       - postfix:postfix
 
+  # TODO NEEDS TO BE CHECKED
   composer:
     image: composer:latest
     container_name: ${PROJECT_NAME}_composer
@@ -113,6 +118,7 @@ services:
     volumes_from:
       - data
 
+  # TODO NEEDS TO BE CHECKED
   node:
     build:
       context: .
@@ -125,6 +131,7 @@ services:
     volumes_from:
       - data
 
+  # TODO NEEDS TO BE CHECKED
   fixer:
     build:
       context: .
@@ -141,13 +148,21 @@ services:
     image: ${PROJECT_NAME}_data:development
     container_name: ${PROJECT_NAME}_data
     volumes:
-      - ./src/backend:/var/www/backend
-      - ./src/frontend:/var/www/frontend
-      - .git:/var/www/backend/.git
+      - ${ASTRO_BE_SRC_DIR}:${ASTRO_BE_DEST_DIR}
+      - ${PMS_BE_SRC_DIR}:${PMS_BE_DEST_DIR}
+      - ${VMS_BE_SRC_DIR}:${VMS_BE_DEST_DIR}
+      - ${CREWING_BE_SRC_DIR}:${CREWING_BE_DEST_DIR}
+      - ${PURCHASING_BE_SRC_DIR}:${PURCHASING_BE_DEST_DIR}
+      - ${ASTRO_FE_SRC_DIR}:${ASTRO_FE_DEST_DIR}
+      - ${PMS_FE_SRC_DIR}:${PMS_FE_DEST_DIR}
+      - ${VMS_FE_SRC_DIR}:${VMS_FE_DEST_DIR}
+      - ${CREWING_FE_SRC_DIR}:${CREWING_FE_DEST_DIR}
+      - ${PURCHASING_FE_SRC_DIR}:${PURCHASING_FE_DEST_DIR}
     environment:
       TZ: ${TIMEZONE}
     tty: true
 
+  # TODO NEEDS TO BE CHECKED
   redis:
     build:
       context: .
