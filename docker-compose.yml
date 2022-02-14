@@ -1,0 +1,159 @@
+version: '2'
+
+volumes:
+  database:
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: './docker/nginx/Dockerfile'
+      args:
+        - ENVIRONMENT=${ENVIRONMENT}
+        - API_DOMAIN=${API_DOMAIN}
+        - APP_DOMAIN=${APP_DOMAIN}
+    image: ${PROJECT_NAME}_nginx:${ENVIRONMENT}
+    container_name: ${PROJECT_NAME}_nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      TZ: ${TIMEZONE}
+      API_DOMAIN: ${API_DOMAIN}
+      APP_DOMAIN: ${APP_DOMAIN}
+    links:
+      - mysql:mysql
+      - php:php
+    volumes_from:
+      - data
+
+  php:
+    build:
+      context: .
+      dockerfile: './docker/php/Dockerfile'
+    image: ${PROJECT_NAME}_php:${ENVIRONMENT}
+    container_name: ${PROJECT_NAME}_php
+    volumes_from:
+      - data
+    working_dir: /var/www/backend
+    ports:
+      - '9000:9000'
+    environment:
+      TZ: ${TIMEZONE}
+    links:
+      - mysql:mysql
+      - postfix:postfix
+      - redis:redis
+
+  mysql:
+    build:
+      context: .
+      dockerfile: './docker/mysql/Dockerfile'
+    image: ${PROJECT_NAME}_mysql:${ENVIRONMENT}
+    command:
+      [
+        '--character-set-server=utf8',
+        '--collation-server=utf8_unicode_ci',
+        '--default-authentication-plugin=mysql_native_password',
+      ]
+    container_name: ${PROJECT_NAME}_mysql
+    ports:
+      - '3306:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: ${TIMEZONE}
+    volumes:
+      - ./docker/mysql/scripts:/docker-entrypoint-initdb.d
+      - database:/var/lib/mysql
+
+  postfix:
+    build:
+      context: .
+      dockerfile: './docker/postfix/Dockerfile'
+    image: ${PROJECT_NAME}_postfix:${ENVIRONMENT}
+    container_name: ${PROJECT_NAME}_postfix
+    ports:
+      - '25:25'
+    environment:
+      - DEBUG=1
+      - MAIL_NAME=${MAIL_NAME}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - DOCKER_IP=${DOCKER_IP}
+
+  cron:
+    build:
+      context: .
+      dockerfile: './docker/cron/Dockerfile'
+    image: ${PROJECT_NAME}_cron:${ENVIRONMENT}
+    container_name: ${PROJECT_NAME}_cron
+    volumes_from:
+      - data
+    working_dir: /var/www/backend
+    environment:
+      TZ: ${TIMEZONE}
+    links:
+      - mysql:mysql
+      - postfix:postfix
+
+  composer:
+    image: composer:latest
+    container_name: ${PROJECT_NAME}_composer
+    environment:
+      TZ: ${TIMEZONE}
+      COMPOSER_HOME: '/composer'
+    entrypoint: /usr/local/bin/composer.sh
+    working_dir: /var/www/backend
+    volumes:
+      - ./docker/composer/entrypoint.sh:/usr/local/bin/composer.sh:ro
+    volumes_from:
+      - data
+
+  node:
+    build:
+      context: .
+      dockerfile: './docker/node/Dockerfile'
+    image: ${PROJECT_NAME}_node:${ENVIRONMENT}
+    container_name: ${PROJECT_NAME}_node
+    working_dir: /var/www/frontend
+    volumes:
+      - ./src/frontend/node_modules:/var/www/frontend/node_modules
+    volumes_from:
+      - data
+
+  fixer:
+    build:
+      context: .
+      dockerfile: './docker/fixer/Dockerfile'
+    container_name: ${PROJECT_NAME}_fixer
+    volumes_from:
+      - data
+    working_dir: /var/www/backend
+
+  data:
+    build:
+      context: .
+      dockerfile: './docker/data/Dockerfile'
+    image: ${PROJECT_NAME}_data:${ENVIRONMENT}
+    container_name: ${PROJECT_NAME}_data
+    volumes:
+      - ./src/backend:/var/www/backend
+      - ./src/frontend:/var/www/frontend
+      - .git:/var/www/backend/.git
+    environment:
+      TZ: ${TIMEZONE}
+    tty: true
+
+  redis:
+    build:
+      context: .
+      dockerfile: './docker/redis/Dockerfile'
+    image: ${PROJECT_NAME}_redis:${ENVIRONMENT}
+    container_name: ${PROJECT_NAME}_redis
+    ports:
+      - "6379:6379"

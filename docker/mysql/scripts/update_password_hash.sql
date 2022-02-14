@@ -1,0 +1,2 @@
+-- Do not use this yet.
+-- ALTER USER 'database_user'@'%' identified with mysql_native_password by 'secret';
