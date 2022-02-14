@@ -9,10 +9,9 @@ services:
       context: .
       dockerfile: './docker/nginx/Dockerfile'
       args:
-        - ENVIRONMENT=${ENVIRONMENT}
         - API_DOMAIN=${API_DOMAIN}
         - APP_DOMAIN=${APP_DOMAIN}
-    image: ${PROJECT_NAME}_nginx:${ENVIRONMENT}
+    image: ${PROJECT_NAME}_nginx:development
     container_name: ${PROJECT_NAME}_nginx
     ports:
       - '80:80'
@@ -31,7 +30,7 @@ services:
     build:
       context: .
       dockerfile: './docker/php/Dockerfile'
-    image: ${PROJECT_NAME}_php:${ENVIRONMENT}
+    image: ${PROJECT_NAME}_php:development
     container_name: ${PROJECT_NAME}_php
     volumes_from:
       - data
@@ -49,7 +48,7 @@ services:
     build:
       context: .
       dockerfile: './docker/mysql/Dockerfile'
-    image: ${PROJECT_NAME}_mysql:${ENVIRONMENT}
+    image: ${PROJECT_NAME}_mysql:development
     command:
       [
         '--character-set-server=utf8',
@@ -73,7 +72,7 @@ services:
     build:
       context: .
       dockerfile: './docker/postfix/Dockerfile'
-    image: ${PROJECT_NAME}_postfix:${ENVIRONMENT}
+    image: ${PROJECT_NAME}_postfix:development
     container_name: ${PROJECT_NAME}_postfix
     ports:
       - '25:25'
@@ -90,7 +89,7 @@ services:
     build:
       context: .
       dockerfile: './docker/cron/Dockerfile'
-    image: ${PROJECT_NAME}_cron:${ENVIRONMENT}
+    image: ${PROJECT_NAME}_cron:development
     container_name: ${PROJECT_NAME}_cron
     volumes_from:
       - data
@@ -118,7 +117,7 @@ services:
     build:
       context: .
       dockerfile: './docker/node/Dockerfile'
-    image: ${PROJECT_NAME}_node:${ENVIRONMENT}
+    image: ${PROJECT_NAME}_node:development
     container_name: ${PROJECT_NAME}_node
     working_dir: /var/www/frontend
     volumes:
@@ -139,7 +138,7 @@ services:
     build:
       context: .
       dockerfile: './docker/data/Dockerfile'
-    image: ${PROJECT_NAME}_data:${ENVIRONMENT}
+    image: ${PROJECT_NAME}_data:development
     container_name: ${PROJECT_NAME}_data
     volumes:
       - ./src/backend:/var/www/backend
@@ -153,7 +152,7 @@ services:
     build:
       context: .
       dockerfile: './docker/redis/Dockerfile'
-    image: ${PROJECT_NAME}_redis:${ENVIRONMENT}
+    image: ${PROJECT_NAME}_redis:development
     container_name: ${PROJECT_NAME}_redis
     ports:
       - "6379:6379"

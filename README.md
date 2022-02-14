@@ -8,8 +8,6 @@ cp .env.example .env
 ```
 Fill in variables
 ```
-ENVIRONMENT=development                 # development/staging/production
-PROJECT_NAME=YOUR_PROJECT_NAME_HERE     # Prefix for the docker containers to be created
 MYSQL_ROOT_PASSWORD=p@ss1234!           # root password of the root mysql user
 MYSQL_DATABASE=YOUR_DATABASE_NAME       # database that will be created
 MYSQL_USER=YOUR_DATABASE_USER           # mysql user
