@@ -209,15 +209,60 @@ services:
     volumes_from:
       - data
 
-  # TODO NEEDS TO BE CHECKED
-  fixer:
+  fixer-astro:
     build:
       context: .
       dockerfile: './docker/fixer/Dockerfile'
-    container_name: ${PROJECT_NAME}_fixer
+      args:
+        - BE_DEST_DIR=${ASTRO_BE_DEST_DIR}
+    container_name: ${PROJECT_NAME}_fixer_astro
     volumes_from:
       - data
-    working_dir: /var/www/backend
+    working_dir: ${ASTRO_BE_DEST_DIR}
+
+  fixer-pms:
+    build:
+      context: .
+      dockerfile: './docker/fixer/Dockerfile'
+      args:
+        - BE_DEST_DIR=${PMS_BE_DEST_DIR}
+    container_name: ${PROJECT_NAME}_fixer_pms
+    volumes_from:
+      - data
+    working_dir: ${PMS_BE_DEST_DIR}
+
+  fixer-vms:
+    build:
+      context: .
+      dockerfile: './docker/fixer/Dockerfile'
+      args:
+        - BE_DEST_DIR=${VMS_BE_DEST_DIR}
+    container_name: ${PROJECT_NAME}_fixer_vms
+    volumes_from:
+      - data
+    working_dir: ${VMS_BE_DEST_DIR}
+
+  fixer-crewing:
+    build:
+      context: .
+      dockerfile: './docker/fixer/Dockerfile'
+      args:
+        - BE_DEST_DIR=${CREWING_BE_DEST_DIR}
+    container_name: ${PROJECT_NAME}_fixer_crewing
+    volumes_from:
+      - data
+    working_dir: ${CREWING_BE_DEST_DIR}
+
+  fixer-purchasing:
+    build:
+      context: .
+      dockerfile: './docker/fixer/Dockerfile'
+      args:
+        - BE_DEST_DIR=${PURCHASING_BE_DEST_DIR}
+    container_name: ${PROJECT_NAME}_fixer_purchasing
+    volumes_from:
+      - data
+    working_dir: ${PURCHASING_BE_DEST_DIR}
 
   data:
     build:
