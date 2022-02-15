@@ -27,11 +27,12 @@ services:
     volumes_from:
       - data
 
-  # TODO NEEDS TO BE CHECKED
   php:
     build:
       context: .
       dockerfile: './docker/php/Dockerfile'
+      args:
+        - TIMEZONE=${TIMEZONE}
     image: ${PROJECT_NAME}_php:development
     container_name: ${PROJECT_NAME}_php
     volumes_from:
