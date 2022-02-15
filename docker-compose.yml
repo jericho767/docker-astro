@@ -196,16 +196,78 @@ services:
     volumes_from:
       - data
 
-  # TODO NEEDS TO BE CHECKED
-  node:
+  node-astro:
     build:
       context: .
       dockerfile: './docker/node/Dockerfile'
+      args:
+        - FE_SRC_DIR=${ASTRO_FE_SRC_DIR}
+        - FE_DEST_DIR=${ASTRO_FE_DEST_DIR}
     image: ${PROJECT_NAME}_node:development
-    container_name: ${PROJECT_NAME}_node
-    working_dir: /var/www/frontend
+    container_name: ${PROJECT_NAME}_node_astro
+    working_dir: ${ASTRO_FE_DEST_DIR}
     volumes:
-      - ./src/frontend/node_modules:/var/www/frontend/node_modules
+      - ${ASTRO_FE_SRC_DIR}/node_modules:${ASTRO_FE_DEST_DIR}/node_modules
+    volumes_from:
+      - data
+
+  node-pms:
+    build:
+      context: .
+      dockerfile: './docker/node/Dockerfile'
+      args:
+        - FE_SRC_DIR=${PMS_FE_SRC_DIR}
+        - FE_DEST_DIR=${PMS_FE_DEST_DIR}
+    image: ${PROJECT_NAME}_node:development
+    container_name: ${PROJECT_NAME}_node_pms
+    working_dir: ${PMS_FE_DEST_DIR}
+    volumes:
+      - ${PMS_FE_SRC_DIR}/node_modules:${PMS_FE_DEST_DIR}/node_modules
+    volumes_from:
+      - data
+
+  node-vms:
+    build:
+      context: .
+      dockerfile: './docker/node/Dockerfile'
+      args:
+        - FE_SRC_DIR=${VMS_FE_SRC_DIR}
+        - FE_DEST_DIR=${VMS_FE_DEST_DIR}
+    image: ${PROJECT_NAME}_node:development
+    container_name: ${PROJECT_NAME}_node_vms
+    working_dir: ${VMS_FE_DEST_DIR}
+    volumes:
+      - ${VMS_FE_SRC_DIR}/node_modules:${VMS_FE_DEST_DIR}/node_modules
+    volumes_from:
+      - data
+
+  node-crewing:
+    build:
+      context: .
+      dockerfile: './docker/node/Dockerfile'
+      args:
+        - FE_SRC_DIR=${CREWING_FE_SRC_DIR}
+        - FE_DEST_DIR=${CREWING_FE_DEST_DIR}
+    image: ${PROJECT_NAME}_node:development
+    container_name: ${PROJECT_NAME}_node_crewing
+    working_dir: ${CREWING_FE_DEST_DIR}
+    volumes:
+      - ${CREWING_FE_SRC_DIR}/node_modules:${CREWING_FE_DEST_DIR}/node_modules
+    volumes_from:
+      - data
+
+  node-purchasing:
+    build:
+      context: .
+      dockerfile: './docker/node/Dockerfile'
+      args:
+        - FE_SRC_DIR=${PURCHASING_FE_SRC_DIR}
+        - FE_DEST_DIR=${PURCHASING_FE_DEST_DIR}
+    image: ${PROJECT_NAME}_node:development
+    container_name: ${PROJECT_NAME}_node_purchasing
+    working_dir: ${PURCHASING_FE_DEST_DIR}
+    volumes:
+      - ${PURCHASING_FE_SRC_DIR}/node_modules:${PURCHASING_FE_DEST_DIR}/node_modules
     volumes_from:
       - data
 
