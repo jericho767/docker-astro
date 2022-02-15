@@ -285,7 +285,6 @@ services:
       TZ: ${TIMEZONE}
     tty: true
 
-  # TODO NEEDS TO BE CHECKED
   redis:
     build:
       context: .
