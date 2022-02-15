@@ -46,7 +46,6 @@ services:
       - postfix:postfix
       - redis:redis
 
-  # TODO NEEDS TO BE CHECKED
   mysql:
     build:
       context: .
@@ -88,16 +87,95 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - DOCKER_IP=${DOCKER_IP}
 
-  # TODO NEEDS TO BE CHECKED
-  cron:
+  cron-astro:
     build:
       context: .
       dockerfile: './docker/cron/Dockerfile'
+      args:
+        - BE_SRC_CODE=${ASTRO_BE_SRC_DIR}
+        - BE_DEST_CODE=${ASTRO_BE_DEST_DIR}
+        - TIMEZONE=${TIMEZONE}
     image: ${PROJECT_NAME}_cron:development
     container_name: ${PROJECT_NAME}_cron
     volumes_from:
       - data
-    working_dir: /var/www/backend
+    working_dir: ${ASTRO_BE_DEST_DIR}
+    environment:
+      TZ: ${TIMEZONE}
+    links:
+      - mysql:mysql
+      - postfix:postfix
+
+  cron-pms:
+    build:
+      context: .
+      dockerfile: './docker/cron/Dockerfile'
+      args:
+        - BE_SRC_CODE=${PMS_BE_SRC_DIR}
+        - BE_DEST_CODE=${PMS_BE_DEST_DIR}
+        - TIMEZONE=${TIMEZONE}
+    image: ${PROJECT_NAME}_cron:development
+    container_name: ${PROJECT_NAME}_cron
+    volumes_from:
+      - data
+    working_dir: ${PMS_BE_DEST_DIR}
+    environment:
+      TZ: ${TIMEZONE}
+    links:
+      - mysql:mysql
+      - postfix:postfix
+
+  cron-vms:
+    build:
+      context: .
+      dockerfile: './docker/cron/Dockerfile'
+      args:
+        - BE_SRC_CODE=${VMS_BE_SRC_DIR}
+        - BE_DEST_CODE=${VMS_BE_DEST_DIR}
+        - TIMEZONE=${TIMEZONE}
+    image: ${PROJECT_NAME}_cron:development
+    container_name: ${PROJECT_NAME}_cron
+    volumes_from:
+      - data
+    working_dir: ${VMS_BE_DEST_DIR}
+    environment:
+      TZ: ${TIMEZONE}
+    links:
+      - mysql:mysql
+      - postfix:postfix
+
+  cron-crewing:
+    build:
+      context: .
+      dockerfile: './docker/cron/Dockerfile'
+      args:
+        - BE_SRC_CODE=${CREWING_BE_SRC_DIR}
+        - BE_DEST_CODE=${CREWING_BE_DEST_DIR}
+        - TIMEZONE=${TIMEZONE}
+    image: ${PROJECT_NAME}_cron:development
+    container_name: ${PROJECT_NAME}_cron
+    volumes_from:
+      - data
+    working_dir: ${CREWING_BE_DEST_DIR}
+    environment:
+      TZ: ${TIMEZONE}
+    links:
+      - mysql:mysql
+      - postfix:postfix
+
+  cron-purchasing:
+    build:
+      context: .
+      dockerfile: './docker/cron/Dockerfile'
+      args:
+        - BE_SRC_CODE=${PURCHASING_BE_SRC_DIR}
+        - BE_DEST_CODE=${PURCHASING_BE_DEST_DIR}
+        - TIMEZONE=${TIMEZONE}
+    image: ${PROJECT_NAME}_cron:development
+    container_name: ${PROJECT_NAME}_cron
+    volumes_from:
+      - data
+    working_dir: ${PURCHASING_BE_DEST_DIR}
     environment:
       TZ: ${TIMEZONE}
     links:
