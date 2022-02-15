@@ -182,15 +182,66 @@ services:
       - mysql:mysql
       - postfix:postfix
 
-  # TODO NEEDS TO BE CHECKED
-  composer:
+  composer-astro:
     image: composer:latest
-    container_name: ${PROJECT_NAME}_composer
+    container_name: ${PROJECT_NAME}_composer_astro
     environment:
       TZ: ${TIMEZONE}
       COMPOSER_HOME: '/composer'
     entrypoint: /usr/local/bin/composer.sh
-    working_dir: /var/www/backend
+    working_dir: ${ASTRO_BE_DEST_DIR}
+    volumes:
+      - ./docker/composer/entrypoint.sh:/usr/local/bin/composer.sh:ro
+    volumes_from:
+      - data
+
+  composer-pms:
+    image: composer:latest
+    container_name: ${PROJECT_NAME}_composer_pms
+    environment:
+      TZ: ${TIMEZONE}
+      COMPOSER_HOME: '/composer'
+    entrypoint: /usr/local/bin/composer.sh
+    working_dir: ${PMS_BE_DEST_DIR}
+    volumes:
+      - ./docker/composer/entrypoint.sh:/usr/local/bin/composer.sh:ro
+    volumes_from:
+      - data
+
+  composer-vms:
+    image: composer:latest
+    container_name: ${PROJECT_NAME}_composer_vms
+    environment:
+      TZ: ${TIMEZONE}
+      COMPOSER_HOME: '/composer'
+    entrypoint: /usr/local/bin/composer.sh
+    working_dir: ${VMS_BE_DEST_DIR}
+    volumes:
+      - ./docker/composer/entrypoint.sh:/usr/local/bin/composer.sh:ro
+    volumes_from:
+      - data
+
+  composer-crewing:
+    image: composer:latest
+    container_name: ${PROJECT_NAME}_composer_crewing
+    environment:
+      TZ: ${TIMEZONE}
+      COMPOSER_HOME: '/composer'
+    entrypoint: /usr/local/bin/composer.sh
+    working_dir: ${CREWING_BE_DEST_DIR}
+    volumes:
+      - ./docker/composer/entrypoint.sh:/usr/local/bin/composer.sh:ro
+    volumes_from:
+      - data
+
+  composer-purchasing:
+    image: composer:latest
+    container_name: ${PROJECT_NAME}_composer_purchasing
+    environment:
+      TZ: ${TIMEZONE}
+      COMPOSER_HOME: '/composer'
+    entrypoint: /usr/local/bin/composer.sh
+    working_dir: ${PURCHASING_BE_DEST_DIR}
     volumes:
       - ./docker/composer/entrypoint.sh:/usr/local/bin/composer.sh:ro
     volumes_from:
