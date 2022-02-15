@@ -96,7 +96,7 @@ services:
         - BE_DEST_CODE=${ASTRO_BE_DEST_DIR}
         - TIMEZONE=${TIMEZONE}
     image: ${PROJECT_NAME}_cron:development
-    container_name: ${PROJECT_NAME}_cron
+    container_name: ${PROJECT_NAME}_cron_astro
     volumes_from:
       - data
     working_dir: ${ASTRO_BE_DEST_DIR}
@@ -115,7 +115,7 @@ services:
         - BE_DEST_CODE=${PMS_BE_DEST_DIR}
         - TIMEZONE=${TIMEZONE}
     image: ${PROJECT_NAME}_cron:development
-    container_name: ${PROJECT_NAME}_cron
+    container_name: ${PROJECT_NAME}_cron_pms
     volumes_from:
       - data
     working_dir: ${PMS_BE_DEST_DIR}
@@ -134,7 +134,7 @@ services:
         - BE_DEST_CODE=${VMS_BE_DEST_DIR}
         - TIMEZONE=${TIMEZONE}
     image: ${PROJECT_NAME}_cron:development
-    container_name: ${PROJECT_NAME}_cron
+    container_name: ${PROJECT_NAME}_cron_vms
     volumes_from:
       - data
     working_dir: ${VMS_BE_DEST_DIR}
@@ -153,7 +153,7 @@ services:
         - BE_DEST_CODE=${CREWING_BE_DEST_DIR}
         - TIMEZONE=${TIMEZONE}
     image: ${PROJECT_NAME}_cron:development
-    container_name: ${PROJECT_NAME}_cron
+    container_name: ${PROJECT_NAME}_cron_crewing
     volumes_from:
       - data
     working_dir: ${CREWING_BE_DEST_DIR}
@@ -172,7 +172,7 @@ services:
         - BE_DEST_CODE=${PURCHASING_BE_DEST_DIR}
         - TIMEZONE=${TIMEZONE}
     image: ${PROJECT_NAME}_cron:development
-    container_name: ${PROJECT_NAME}_cron
+    container_name: ${PROJECT_NAME}_cron_purchasing
     volumes_from:
       - data
     working_dir: ${PURCHASING_BE_DEST_DIR}
