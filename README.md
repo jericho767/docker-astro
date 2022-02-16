@@ -28,6 +28,10 @@ TIMEZONE=Asia/Manila
 ```
 Add the listed domains in the `.env` to the host file:
 ```
-192.168.99.100 api.app-astro.loc app-astro.loc api.app-pms.loc app-pms.loc api.app-vms.loc app-vms.loc api.app-crewing.loc app-crewing.loc api.app-purchasing.loc app-purchasing.loc
+127.0.0.1   api.app-astro.loc       app-astro.loc 
+127.0.0.1   api.app-pms.loc         app-pms.loc 
+127.0.0.1   api.app-vms.loc         app-vms.loc 
+127.0.0.1   api.app-crewing.loc     app-crewing.loc 
+127.0.0.1   api.app-purchasing.loc  app-purchasing.loc
 ```
-Note: Replace `192.168.99.100` with your docker machine IP.
+Note: Replace `127.0.0.1` with your docker machine IP.
