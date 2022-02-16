@@ -4,14 +4,31 @@ volumes:
   database:
 
 services:
-  # TODO NEEDS TO BE CHECKED
   nginx:
     build:
       context: .
       dockerfile: './docker/nginx/Dockerfile'
       args:
-        - API_DOMAIN=${API_DOMAIN}
-        - APP_DOMAIN=${APP_DOMAIN}
+        - ASTRO_API_DOMAIN=${ASTRO_API_DOMAIN}
+        - ASTRO_APP_DOMAIN=${ASTRO_APP_DOMAIN}
+        - PMS_API_DOMAIN=${PMS_API_DOMAIN}
+        - PMS_APP_DOMAIN=${PMS_APP_DOMAIN}
+        - VMS_API_DOMAIN=${VMS_API_DOMAIN}
+        - VMS_APP_DOMAIN=${VMS_APP_DOMAIN}
+        - CREWING_API_DOMAIN=${CREWING_API_DOMAIN}
+        - CREWING_APP_DOMAIN=${CREWING_APP_DOMAIN}
+        - PURCHASING_API_DOMAIN=${PURCHASING_API_DOMAIN}
+        - PURCHASING_APP_DOMAIN=${PURCHASING_APP_DOMAIN}
+        - ASTRO_BE_DEST_DIR=${ASTRO_BE_DEST_DIR}
+        - PMS_BE_DEST_DIR=${PMS_BE_DEST_DIR}
+        - VMS_BE_DEST_DIR=${VMS_BE_DEST_DIR}
+        - CREWING_BE_DEST_DIR=${CREWING_BE_DEST_DIR}
+        - PURCHASING_BE_DEST_DIR=${PURCHASING_BE_DEST_DIR}
+        - ASTRO_FE_DEST_DIR=${ASTRO_FE_DEST_DIR}
+        - PMS_FE_DEST_DIR=${PMS_FE_DEST_DIR}
+        - VMS_FE_DEST_DIR=${VMS_FE_DEST_DIR}
+        - CREWING_FE_DEST_DIR=${CREWING_FE_DEST_DIR}
+        - PURCHASING_FE_DEST_DIR=${PURCHASING_FE_DEST_DIR}
     image: ${PROJECT_NAME}_nginx:development
     container_name: ${PROJECT_NAME}_nginx
     ports:
@@ -19,8 +36,6 @@ services:
       - '443:443'
     environment:
       TZ: ${TIMEZONE}
-      API_DOMAIN: ${API_DOMAIN}
-      APP_DOMAIN: ${APP_DOMAIN}
     links:
       - mysql:mysql
       - php:php
